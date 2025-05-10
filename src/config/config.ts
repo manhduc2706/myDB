@@ -1,8 +1,13 @@
 // src/config.ts
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
+dotenv.config();
 
-dotenv.config()
+export const PORT = process.env.PORT || "3000";
+export const SECRET_KEY = process.env.SECRET_KEY || "your-secret";
 
-export const PORT = process.env.PORT
-export const MONGODB_URL = process.env.MONGODB_URL
-export const SECRET_KEY = process.env.SECRET_KEY
+// SQL Server
+export const DB_HOST = process.env.DB_HOST as string;
+export const DB_PORT = parseInt(process.env.DB_PORT || "1434");
+export const DB_USERNAME = process.env.DB_USERNAME as string;
+export const DB_PASSWORD = process.env.DB_PASSWORD as string;
+export const DB_NAME = process.env.DB_NAME as string;
