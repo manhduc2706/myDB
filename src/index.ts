@@ -2,7 +2,7 @@ import express from 'express';
 import { PORT } from './config/config';
 import userRoute from './routes/user.route';
 import dotenv from 'dotenv';
-import { AppDataSource } from './data-source'; // Import data source từ TypeORM
+import { AppDataSource } from './config/db'; // Import data source từ TypeORM
 
 const app = express();
 app.use(express.json());
