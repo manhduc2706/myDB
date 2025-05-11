@@ -13,7 +13,7 @@ dotenv.config();
 
 AppDataSource.initialize()
   .then(() => {
-    console.log("Data Source has been initialized!");
+    console.log("DB connected successfully");
     
     app.use("/api", userRoute); // Đảm bảo các routes sử dụng API đã cấu hình
 

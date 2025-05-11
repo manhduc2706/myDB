@@ -1,15 +1,9 @@
-import { AppDataSource } from "../config/db"; // Import data source từ TypeORM
-import { User } from "../models/user.model";  // Import mô hình User
-import { Repository } from "typeorm"; // Import Repository từ TypeORM
+import { AppDataSource } from "../config/db";
+import { User } from "../models/user.model";
+import { Repository } from "typeorm";
 
 export class UserService {
-  private userRepository: Repository<User>;
-  static userRepository: any;
-
-  constructor() {
-    // Khởi tạo repository từ data source của TypeORM
-    this.userRepository = AppDataSource.getRepository(User);
-  }
+  private static userRepository: Repository<User> = AppDataSource.getRepository(User);
 
   // Đăng ký người dùng mới
   static async registerUser(username: string, email: string, password: string) {
@@ -26,7 +20,7 @@ export class UserService {
     user.email = email;
     user.password = password;
 
-    await this.userRepository.save(user);  // Lưu người dùng mới vào SQL Server
+    await this.userRepository.save(user);
     return user;
   }
 
@@ -44,14 +38,14 @@ export class UserService {
   }
 
   // Lấy tất cả người dùng
-  static async getAllUsers(users: any) {
+  static async getAllUsers() {
     return await this.userRepository.find();
   }
 
   // Lấy người dùng theo ID
   static async getUserById(id: string) {
     const user = await this.userRepository.findOne({
-      where: { id: parseInt(id) }, // Chuyển id sang kiểu số nếu cần
+      where: { id: parseInt(id) },
     });
     if (!user) {
       throw new Error("User not found");

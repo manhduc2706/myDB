@@ -27,8 +27,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const user = req.body;
-    const result = await UserService.getAllUsers(user);
+    const result = await UserService.getAllUsers();
     res.status(200).json(result);
   } catch (error) {
     if (error instanceof Error) {
