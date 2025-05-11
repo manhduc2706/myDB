@@ -1,4 +1,4 @@
-import { AppDataSource } from "../data-source"; // Import data source từ TypeORM
+import { AppDataSource } from "../config/db"; // Import data source từ TypeORM
 import { User } from "../models/user.model";  // Import mô hình User
 import { Repository } from "typeorm"; // Import Repository từ TypeORM
 
