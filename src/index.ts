@@ -1,8 +1,10 @@
-import express from 'express';
-import { PORT } from './config/config';
-import userRoute from './routes/user.route';
-import dotenv from 'dotenv';
-import { AppDataSource } from './config/db'; // Import data source từ TypeORM
+import express from "express";
+import { PORT } from "./config/config";
+import userRoute from "./routes/user.route";
+import dotenv from "dotenv";
+import { AppDataSource } from "./config/db"; // Import data source từ TypeORM
+import companyRoute from "./routes/company.route";
+import departmentRoute from "./routes/department.route";
 
 const app = express();
 app.use(express.json());
@@ -14,10 +16,13 @@ dotenv.config();
 AppDataSource.initialize()
   .then(() => {
     console.log("DB connected successfully");
-    
-    app.use("/api", userRoute); // Đảm bảo các routes sử dụng API đã cấu hình
 
-    app.get('/', (req, res) => {
+    // Đảm bảo các routes sử dụng API đã cấu hình
+    app.use("/api", userRoute);
+    app.use("/api", companyRoute);
+    app.use("/api", departmentRoute);
+
+    app.get("/", (req, res) => {
       const name = "Hello World";
       console.log(name);
       res.send(`<p>${name}</p>`);

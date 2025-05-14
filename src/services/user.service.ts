@@ -3,13 +3,14 @@ import { User } from "../models/user.model";
 import { Repository } from "typeorm";
 
 export class UserService {
-  private static userRepository: Repository<User> = AppDataSource.getRepository(User);
+  private static userRepository: Repository<User> =
+    AppDataSource.getRepository(User);
 
   // Đăng ký người dùng mới
-  static async registerUser(username: string, email: string, password: string) {
+  static async registerUser(username: string, email: string, password: string, departmentId: number) {
     const existingUser = await this.userRepository.findOne({
       where: { email },
-    });
+    }); 
 
     if (existingUser) {
       throw new Error("Email đã được sử dụng");
@@ -19,7 +20,7 @@ export class UserService {
     user.username = username;
     user.email = email;
     user.password = password;
-
+    user.departmentId = departmentId;
     await this.userRepository.save(user);
     return user;
   }
@@ -45,7 +46,7 @@ export class UserService {
   // Lấy người dùng theo ID
   static async getUserById(id: string) {
     const user = await this.userRepository.findOne({
-      where: { id: parseInt(id) },
+      where: { userId: parseInt(id) },
     });
     if (!user) {
       throw new Error("User not found");

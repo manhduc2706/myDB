@@ -4,12 +4,15 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
+  ManyToOne,
 } from "typeorm";
+import { Department } from "./department.model";
 
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  userId: number;
 
   @Column({ unique: true })
   username: string;
@@ -19,6 +22,14 @@ export class User {
 
   @Column({ unique: true })
   email: string;
+  
+  @ManyToOne(() => Department)
+
+  @JoinColumn({ name: "departmentId" })
+  department: Department;
+
+  @Column()
+  departmentId: number;
 
   @CreateDateColumn()
   createdAt: Date;

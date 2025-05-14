@@ -1,14 +1,10 @@
 // src/db.ts
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import {
-  DB_HOST,
-  DB_PORT,
-  DB_USERNAME,
-  DB_PASSWORD,
-  DB_NAME,
-} from "./config";
-import { User } from "../models/user.model"; 
+import { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME } from "./config";
+import { User } from "../models/user.model";
+import { Department } from "../models/department.model";
+import { Company } from "../models/company.model";
 
 export const AppDataSource = new DataSource({
   type: "mssql",
@@ -19,7 +15,7 @@ export const AppDataSource = new DataSource({
   database: DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [User],
+  entities: [User, Department, Company],
   options: {
     encrypt: false, // Bỏ nếu dùng Azure hoặc có SSL
   },
