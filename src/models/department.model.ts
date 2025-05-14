@@ -19,8 +19,8 @@ export class Department {
   @Column({ unique: true })
   departmentName: string;
 
-  @ManyToOne(() => Company)
-  
+  @ManyToOne(() => Company, (company) => company.departments)
+
   @JoinColumn({ name: "companyId" })
   company: Company;
 

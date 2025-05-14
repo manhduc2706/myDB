@@ -23,8 +23,8 @@ export class User {
   @Column({ unique: true })
   email: string;
   
-  @ManyToOne(() => Department)
-
+  @ManyToOne(() => Department, (department) => department.users)
+  
   @JoinColumn({ name: "departmentId" })
   department: Department;
 
