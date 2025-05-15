@@ -1,33 +1,28 @@
 import { AppDataSource } from "../config/db";
 import { User } from "../models/user.model";
 import { Repository } from "typeorm";
+import { RegisterInput } from "../schemas/user.schema";
 
 export class UserService {
-  private static userRepository: Repository<User> =
-    AppDataSource.getRepository(User);
+  // private static userRepository: Repository<User> =
+  //   AppDataSource.getRepository(User);
 
   // Đăng ký người dùng mới
-  static async registerUser(username: string, email: string, password: string, departmentId: number) {
-    const existingUser = await this.userRepository.findOne({
-      where: { email },
-    }); 
-
-    if (existingUser) {
+  static async register(data: RegisterInput) {
+    const userRepo = AppDataSource.getRepository(User);
+    const existing = await userRepo.findOneBy({ email: data.email });
+    if (existing) {
       throw new Error("Email đã được sử dụng");
     }
 
-    const user = new User();
-    user.username = username;
-    user.email = email;
-    user.password = password;
-    user.departmentId = departmentId;
-    await this.userRepository.save(user);
-    return user;
+    const newUser = userRepo.create(data);
+    return await userRepo.save(newUser);
   }
 
   // Đăng nhập người dùng
   static async loginUser(email: string, password: string) {
-    const user = await this.userRepository.findOne({
+    const userRepo = AppDataSource.getRepository(User);
+    const user = await userRepo.findOne({
       where: { email, password },
     });
 
@@ -40,12 +35,14 @@ export class UserService {
 
   // Lấy tất cả người dùng
   static async getAllUsers() {
-    return await this.userRepository.find();
+    const userRepo = AppDataSource.getRepository(User);
+    return await userRepo.find();
   }
 
   // Lấy người dùng theo ID
   static async getUserById(id: string) {
-    const user = await this.userRepository.findOne({
+    const userRepo = AppDataSource.getRepository(User);
+    const user = await userRepo.findOne({
       where: { userId: parseInt(id) },
     });
     if (!user) {

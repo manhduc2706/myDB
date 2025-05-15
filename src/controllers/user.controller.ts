@@ -1,24 +1,12 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
-import { validateOrReject } from "class-validator";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { username, email, password, departmentId } = req.body;
-    const user = await UserService.registerUser(
-      username,
-      email,
-      password,
-      departmentId
-    );
-
-    res.status(201).json({ message: "User registered successfully", user });
-  } catch (error) {
-    
-
-    if (error instanceof Error) {
-      res.status(400).json({ message: error.message });
-    }
+    const user = await UserService.register(req.body);
+    res.status(201).json({ message: "Đăng ký thành công", user });
+  } catch (err) {
+    res.status(400).json({ message: (err as Error).message });
   }
 };
 

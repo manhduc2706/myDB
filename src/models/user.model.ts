@@ -14,7 +14,7 @@ export class User {
   @PrimaryGeneratedColumn()
   userId: number;
 
-  @Column({ unique: true })
+  @Column()
   username: string;
 
   @Column()
@@ -22,9 +22,8 @@ export class User {
 
   @Column({ unique: true })
   email: string;
-  
+
   @ManyToOne(() => Department, (department) => department.users)
-  
   @JoinColumn({ name: "departmentId" })
   department: Department;
 

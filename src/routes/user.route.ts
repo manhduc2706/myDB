@@ -1,14 +1,16 @@
-import express from "express";
+import { Router } from "express";
 import {
   register,
   login,
   getUsers,
   getById,
 } from "../controllers/user.controller";
+import { validateBody } from "../middlewares/validate.middleware";
+import { registerSchema } from "../schemas/user.schema";
 
-const userRoute = express.Router();
+const userRoute = Router();
 
-userRoute.post("/register", register);
+userRoute.post("/register", validateBody(registerSchema), register);
 userRoute.post("/login", login);
 userRoute.get("/users", getUsers);
 userRoute.get("/user/:id", getById);
