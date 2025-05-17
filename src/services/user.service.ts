@@ -1,12 +1,11 @@
 import { AppDataSource } from "../config/db";
-import { User } from "../models/user.model";
+import { User } from "../database/models/user.model";
 import { Repository } from "typeorm";
-import { RegisterInput } from "../schemas/user.schema";
+import { RegisterInput } from "../database/schemas/user.schema";
+import { METHODS } from "node:http";
+import { signToken } from "../utils/jwt";
 
 export class UserService {
-  // private static userRepository: Repository<User> =
-  //   AppDataSource.getRepository(User);
-
   // Đăng ký người dùng mới
   static async register(data: RegisterInput) {
     const userRepo = AppDataSource.getRepository(User);
@@ -29,7 +28,6 @@ export class UserService {
     if (!user) {
       throw new Error("Invalid credentials");
     }
-
     return user;
   }
 
@@ -49,5 +47,30 @@ export class UserService {
       throw new Error("User not found");
     }
     return user;
+  }
+
+  // Cập nhật thông tin người dùng
+  static async updateUser(id: string, data: Partial<User>) {
+    const userRepo = AppDataSource.getRepository(User);
+    const user = await userRepo.findOne({
+      where: { userId: parseInt(id) },
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    Object.assign(user, data);
+    return await userRepo.save(user);
+  }
+
+  // Xóa người dùng
+  static async deleteUser(id: string) {
+    const userRepo = AppDataSource.getRepository(User);
+    const user = await userRepo.findOne({
+      where: { userId: parseInt(id) },
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return await userRepo.remove(user);
   }
 }

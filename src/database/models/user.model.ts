@@ -8,6 +8,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Department } from "./department.model";
+import { ROLE, STATE } from "../enum/enum";
 
 @Entity("users")
 export class User {
@@ -29,6 +30,19 @@ export class User {
 
   @Column()
   departmentId: number;
+
+  @Column({
+    type: "varchar",
+    enum: ROLE,
+    default: ROLE.USER,
+  })
+  role: ROLE;
+  @Column({
+    type: "varchar",
+    enum: STATE,
+    default: STATE.ACTIVE,
+  })
+  state: STATE;
 
   @CreateDateColumn()
   createdAt: Date;

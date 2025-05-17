@@ -2,9 +2,9 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME } from "./config";
-import { User } from "../models/user.model";
-import { Department } from "../models/department.model";
-import { Company } from "../models/company.model";
+import { User } from "../database/models/user.model";
+import { Department } from "../database/models/department.model";
+import { Company } from "../database/models/company.model";
 
 export const AppDataSource = new DataSource({
   type: "mssql",

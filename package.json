@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.15.18",
     "nodemon": "^3.1.10",
@@ -26,6 +27,7 @@
     "class-validator": "^0.14.2",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.2",
     "mssql": "^11.0.1",
     "reflect-metadata": "^0.2.2",
