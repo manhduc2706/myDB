@@ -17,10 +17,22 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const user = await UserService.loginUser(email, password);
-    res.status(200).json({ message: "Login successful", user });
+    
+    const token = generateToken({
+      id: user.userId,
+      email: user.email,
+      role: user.role
+    });
 
-    const token = generateToken({ id: user.userId, role: user.role });
-    res.json({ token });
+    res.status(200).json({
+      message: "Đăng nhập thành công",
+      user: {
+        id: user.userId,
+        email: user.email,
+        role: user.role
+      },
+      token
+    });
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
