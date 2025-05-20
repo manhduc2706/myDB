@@ -10,7 +10,7 @@ export const validateBody = (schema: ZodSchema<any>) => {
       return;
     }
 
-    req.body = result.data; // dữ liệu đã được validate
+    req.body = result.data; 
     next();
   };
 };

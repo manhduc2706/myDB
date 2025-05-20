@@ -1,15 +1,16 @@
 import { ROLE } from "../database/enum/enum";
 
-interface AccountSign {
-  id: string;
+export interface AccountDecode {
+  id: number;
+  email: string;
   role: ROLE;
 }
 
-interface AccountDecode {
-  id: string;
-  role: ROLE;
-  iat: number;
-  exp: number;
-}
+// interface AccountDecode {
+//   id: string;
+//   role: ROLE;
+//   iat: number;
+//   exp: number;
+// }
 
-export { AccountSign, AccountDecode };
+// export { AccountSign, AccountDecode };

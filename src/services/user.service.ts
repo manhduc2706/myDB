@@ -1,9 +1,6 @@
 import { AppDataSource } from "../config/db";
 import { User } from "../database/models/user.model";
-import { Repository } from "typeorm";
 import { RegisterInput } from "../database/schemas/user.schema";
-import { METHODS } from "node:http";
-import { signToken } from "../utils/jwt";
 
 export class UserService {
   // Đăng ký người dùng mới

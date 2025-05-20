@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
-import { signToken } from "../utils/jwt";
+import { generateToken } from "../utils/jwt";
 
 //Đang ký người dùng mới
 export const register = async (req: Request, res: Response) => {
@@ -19,7 +19,8 @@ export const login = async (req: Request, res: Response) => {
     const user = await UserService.loginUser(email, password);
     res.status(200).json({ message: "Login successful", user });
 
-    const token = signToken({ id: user.userId, role: user.role });
+    const token = generateToken({ id: user.userId, role: user.role });
+    res.json({ token });
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({ message: error.message });
