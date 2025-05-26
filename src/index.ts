@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import { AppDataSource } from "./config/db"; // Import data source từ TypeORM
 import companyRoute from "./routes/company.route";
 import departmentRoute from "./routes/department.route";
+import { upload } from "./middlewares/upload.middleware";
+import uploadRoute from "./routes/upload.route";
 
 const app = express();
 app.use(express.json());
@@ -21,6 +23,7 @@ AppDataSource.initialize()
     app.use("/api", userRoute);
     app.use("/api", companyRoute);
     app.use("/api", departmentRoute);
+    app.use("/api", uploadRoute);
 
     app.get("/", (req, res) => {
       const name = "Hello World";

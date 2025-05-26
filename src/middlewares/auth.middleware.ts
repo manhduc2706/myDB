@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { JwtPayload } from "../types";
 
 // Middleware xác thực token
-export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
+export const authenticate = (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -25,7 +25,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
 };
 
 // Middleware phân quyền: chỉ cho phép admin
-export const isAdmin = (req: Request, res: Response, next: NextFunction): void => {
+export const isAdmin = (req: Request, res: Response, next: NextFunction)=> {
   const user = req.user;
 
   if (!user || user.role !== "admin") {

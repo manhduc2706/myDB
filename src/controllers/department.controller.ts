@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { DepartmentService } from "../services/department.service";
 
+
+//Them mới phòng ban
 export const addDepartment = async (req: Request, res: Response) => {
     try{
         const { departmentName, companyId } = req.body;
@@ -13,6 +15,7 @@ export const addDepartment = async (req: Request, res: Response) => {
     }
 }
 
+//Lấy tất cả phòng ban
 export const getDepartments = async (req: Request, res: Response) => {
     try {
         const departments = await DepartmentService.getAllDepartments();
@@ -24,11 +27,39 @@ export const getDepartments = async (req: Request, res: Response) => {
     }
 }
 
+//Lấy phòng ban theo ID
 export const getDepartmentById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const department = await DepartmentService.getDepartmentById(id);
+        const department = await DepartmentService.getDepartmentId(id);
         res.status(200).json(department);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+}
+
+//Cập nhật phòng ban
+export const updateDepartment = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { departmentName, companyId } = req.body;
+        const department = await DepartmentService.updateDepartmentById(id, departmentName, companyId);
+        res.status(200).json({ message: "Department updated successfully", department });
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+}
+
+//Xóa phòng ban
+export const deleteDepartment = async (req: Request, res: Response) => { 
+    try {
+        const { id } = req.params;
+        await DepartmentService.deleteDepartmentById(id);
+        res.status(200).json({ message: "Department deleted successfully" });
     } catch (error) {
         if (error instanceof Error) {
             res.status(400).json({ message: error.message });
