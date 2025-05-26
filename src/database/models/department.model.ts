@@ -1,38 +1,48 @@
 import {
+  AllowNull,
+  BelongsTo,
   Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from "typeorm";
+  DataType,
+  Default,
+  ForeignKey,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+} from "sequelize-typescript";
 import { Company } from "./company.model";
 import { User } from "./user.model";
 
-@Entity("departments")
-export class Department {
-  @PrimaryGeneratedColumn()
-  departmentId: number;
-
-  @Column({ unique: true })
+export interface DepartmentAttributes {
+  departmentId: string;
   departmentName: string;
+  companyId: string;
+}
 
-  @ManyToOne(() => Company, (company) => company.departments)
+@Table({
+  tableName: "departments",
+  timestamps: true,
+})
+export class Department extends Model {
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
+  departmentId!: string;
 
-  @JoinColumn({ name: "companyId" })
-  company: Company;
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  departmentName!: string;
 
-  @OneToMany(() => User, (user) => user.department)
-  users: User[];
+  // N - 1 company
+  @ForeignKey(() => Company)
+  @AllowNull(false)
+  @Column(DataType.UUID)
+  companyId!: string;
 
-  @Column()
-  companyId: number;
+  @BelongsTo(() => Company)
+  company!: Company;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  // 1 - N user
+  @HasMany(() => User)
+  users?: User[];
 }

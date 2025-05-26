@@ -1,73 +1,68 @@
-import { AppDataSource } from "../config/db";
+// services/user.service.ts
 import { User } from "../database/models/user.model";
-import { RegisterInput } from "../database/schemas/user.schema";
+import { RegisterInput } from '../database/schemas/user.schema';
 
 export class UserService {
   // Đăng ký người dùng mới
   static async register(data: RegisterInput) {
-    const userRepo = AppDataSource.getRepository(User);
-    const existing = await userRepo.findOneBy({ email: data.email });
+    const existing = await User.findOne({
+      where: { email: data.email },
+    });
+
     if (existing) {
-      throw new Error("Email đã được sử dụng");
+      throw new Error('Email đã được sử dụng');
     }
 
-    const newUser = userRepo.create(data);
-    return await userRepo.save(newUser);
+    const newUser = await User.create(data as any);
+    return newUser;
   }
 
   // Đăng nhập người dùng
   static async loginUser(email: string, password: string) {
-    const userRepo = AppDataSource.getRepository(User);
-    const user = await userRepo.findOne({
-      where: { email, password },
+    const user = await User.findOne({
+      where: { email, password }, 
     });
 
     if (!user) {
-      throw new Error("Invalid credentials");
+      throw new Error('Invalid credentials');
     }
+
     return user;
   }
 
   // Lấy tất cả người dùng
   static async getAllUsers() {
-    const userRepo = AppDataSource.getRepository(User);
-    return await userRepo.find();
+    return await User.findAll();
   }
 
   // Lấy người dùng theo ID
   static async getUserById(id: string) {
-    const userRepo = AppDataSource.getRepository(User);
-    const user = await userRepo.findOne({
-      where: { userId: parseInt(id) },
-    });
+    const user = await User.findByPk(parseInt(id));
     if (!user) {
-      throw new Error("User not found");
+      throw new Error('User not found');
     }
     return user;
   }
 
   // Cập nhật thông tin người dùng
   static async updateUser(id: string, data: Partial<User>) {
-    const userRepo = AppDataSource.getRepository(User);
-    const user = await userRepo.findOne({
-      where: { userId: parseInt(id) },
-    });
+    const user = await User.findByPk(parseInt(id));
     if (!user) {
-      throw new Error("User not found");
+      throw new Error('User not found');
     }
-    Object.assign(user, data);
-    return await userRepo.save(user);
+
+    await user.update(data);
+    return user;
   }
 
   // Xóa người dùng
   static async deleteUser(id: string) {
-    const userRepo = AppDataSource.getRepository(User);
-    const user = await userRepo.findOne({
-      where: { userId: parseInt(id) },
-    });
+    const user = await User.findByPk(parseInt(id));
     if (!user) {
-      throw new Error("User not found");
+      throw new Error('User not found');
     }
-    return await userRepo.remove(user);
+
+    await user.destroy();
+    return;
   }
 }

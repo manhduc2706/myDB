@@ -1,27 +1,28 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from "typeorm";
+import { AllowNull, Column, DataType, Default, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
 import { Department } from "./department.model";
 
-@Entity("companies")
-export class Company {
-  @PrimaryGeneratedColumn()
-  companyId: number;
-
-  @Column({ unique: true })
+export interface CompanyAttributes {
+  companyId: string;
   companyName: string;
+}
 
-  @OneToMany(() => Department, (department) => department.company)
-  departments: Department[];
+@Table({
+  tableName: "companies",
+  timestamps: true,
+})
+export class Company extends Model {
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
+  companyId!: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  companyName!: string
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+
+  // 1 - N department
+  @HasMany(() => Department)
+  departments?: Department[]
+
 }

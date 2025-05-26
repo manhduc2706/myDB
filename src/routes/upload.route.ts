@@ -1,9 +1,9 @@
-import { Router } from "express";
-import { authenticate } from "../middlewares/auth.middleware";
-import { uploadFile } from "../controllers/upload.controller";
+// import { Router } from "express";
+// import { authenticate } from "../middlewares/auth.middleware";
+// import { uploadFile } from "../controllers/upload.controller";
 
-const uploadRoute = Router();
+// const uploadRoute = Router();
 
-uploadRoute.post("/upload",authenticate, uploadFile)
+// uploadRoute.post("/upload",authenticate, uploadFile)
 
-export default uploadRoute;
+// export default uploadRoute;

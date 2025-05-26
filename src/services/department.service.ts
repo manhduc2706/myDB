@@ -1,79 +1,64 @@
-import { Repository } from "typeorm";
 import { Department } from "../database/models/department.model";
-import { AppDataSource } from "../config/db";
 import { Company } from "../database/models/company.model";
 
 export class DepartmentService {
- 
-  //Tạo mới phòng ban
+  // Tạo mới phòng ban
   static async addOneDepartment(departmentName: string, companyId: number) {
-    const departmentRepo = AppDataSource.getRepository(Department);
-    const existingDepartment = await departmentRepo.findOne({
+    const existingDepartment = await Department.findOne({
       where: { departmentName },
     });
 
     if (existingDepartment) {
-      throw new Error("Department already exists");
+      throw new Error('Department already exists');
     }
 
-    const department = new Department();
-    department.departmentName = departmentName;
-    department.companyId = companyId;
-
-    await departmentRepo.save(department);
+    const department = await Department.create({ departmentName, companyId });
     return department;
   }
 
-  //Lấy tất cả phòng ban
+  // Lấy tất cả phòng ban (kèm công ty)
   static async getAllDepartments() {
-    const departmentRepo = AppDataSource.getRepository(Department);
-    return await departmentRepo.find({
-      relations: ["company"],
+    return await Department.findAll({
+      include: [Company],
     });
   }
 
-  //Lấy phòng ban theo ID
+  // Lấy phòng ban theo ID
   static async getDepartmentId(id: string) {
-    const departmentRepo = AppDataSource.getRepository(Department);
-    const department = await departmentRepo.findOne({
-      where: { departmentId: parseInt(id) },
-      relations: ["company"],
+    const department = await Department.findByPk(parseInt(id), {
+      include: [Company],
     });
+
     if (!department) {
-      throw new Error("Department not found");
+      throw new Error('Department not found');
     }
+
     return department;
   }
 
-  //Cập nhật phòng ban
-  static async updateDepartmentById(
-    id: string,
-    departmentName: string,
-    companyId: number
-  ) {
-    const departmentRepo = AppDataSource.getRepository(Department);
-    const department = await departmentRepo.findOne({
-      where: { departmentId: parseInt(id) },
-    });
+  // Cập nhật phòng ban
+  static async updateDepartmentById(id: string, departmentName: string, companyId: string) {
+    const department = await Department.findByPk(parseInt(id));
+
     if (!department) {
-      throw new Error("Department not found");
+      throw new Error('Department not found');
     }
+
     department.departmentName = departmentName;
     department.companyId = companyId;
 
-    await departmentRepo.save(department);
+    await department.save();
     return department;
   }
 
-  //Xóa phòng ban
+  // Xóa phòng ban
   static async deleteDepartmentById(id: string) {
-    const departmentRepo = AppDataSource.getRepository(Department);
-    const department = await departmentRepo.findOne({
-      where: { departmentId: parseInt(id) },
-    });
+    const department = await Department.findByPk(parseInt(id));
+
     if (!department) {
-      throw new Error("Department not found");
+      throw new Error('Department not found');
     }
-    await departmentRepo.remove(department);
+
+    await department.destroy();
   }
 }
