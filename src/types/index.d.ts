@@ -6,6 +6,15 @@ export interface JwtPayload {
   role: "admin" | "user";
 }
 
+declare namespace Express {
+  interface Request {
+    user?: {
+      id: string | number;
+      // thêm các thuộc tính khác của user nếu cần
+    };
+  }
+}
+
 declare global {
   namespace Express {
     interface Request {

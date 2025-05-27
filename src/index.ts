@@ -6,6 +6,7 @@ import connectDB from "./config/db"; // Import data source từ TypeORM
 import companyRoute from "./routes/company.route";
 import departmentRoute from "./routes/department.route";
 import { upload } from "./middlewares/upload.middleware";
+import uploadRoute from "./routes/upload.route";
 // import uploadRoute from "./routes/upload.route";
 
 const app = express();
@@ -23,6 +24,9 @@ connectDB()
     app.use("/api", userRoute);
     app.use("/api", companyRoute);
     app.use("/api", departmentRoute);
+    app.use("/api", uploadRoute);
+    app.use("/uploads", express.static("uploads")); // Truy cập file tĩnh
+
     // app.use("/api", uploadRoute);
 
     app.get("/", (req, res) => {

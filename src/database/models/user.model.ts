@@ -1,7 +1,8 @@
 
 import { Department } from "./department.model";
 import { ROLE, STATE } from "../enum/enum";
-import { AllowNull, BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { AllowNull, BelongsTo, Column, DataType, Default, ForeignKey, HasMany, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { UploadFile } from "./upload.model";
 
 export interface UserAttributes{
   userId: string;
@@ -35,6 +36,10 @@ export class User extends Model {
   @Unique
   @Column(DataType.STRING)
   email!: string;
+
+  // 1 - N uploadFile
+  @HasMany(()=> UploadFile)
+  uploadFiles?: UploadFile[]
 
   // N - 1 department
   @ForeignKey(() => Department)

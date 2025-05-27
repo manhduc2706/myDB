@@ -1,38 +1,44 @@
-// import {
-//   Column,
-//   CreateDateColumn,
-//   Entity,
-//   JoinColumn,
-//   OneToOne,
-//   PrimaryGeneratedColumn,
-//   UpdateDateColumn,
-// } from "typeorm";
-// import { User } from "./user.model";
+import { User } from "./user.model";
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  AllowNull,
+  BelongsTo,
+  PrimaryKey,
+  Default,
+} from "sequelize-typescript";
 
-// @Entity("uploads")
-// export class Upload {
-//   @PrimaryGeneratedColumn()
-//   uploadId: number;
+@Table({ tableName: "upload_files", timestamps: true })
+export class UploadFile extends Model {
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
+  fileId!: string;
 
-//   @Column()
-//   uploadName: string;
+  @AllowNull(false)
+  @Column({ type: DataType.STRING })
+  name!: string;
 
-//   @Column()
-//   uploadPath: string;
+  @AllowNull(false)
+  @Column({ type: DataType.STRING })
+  path!: string;
 
-//   @Column()
-//   uploadType: string;
+  @AllowNull(false)
+  @Column({ type: DataType.STRING })
+  type!: string;
 
-//   @Column()
-//   uploadSize: number;
+  @AllowNull(false)
+  @Column({ type: DataType.INTEGER })
+  size!: number;
 
-//   @OneToOne(() => User)
-//   @JoinColumn({ name: "userId" })
-//   user: User;
+  @ForeignKey(() => User)
+  @AllowNull(false)
+  @Column(DataType.UUID)
+  userId?: User;
 
-//   @CreateDateColumn()
-//   createdAt: Date;
-
-//   @UpdateDateColumn()
-//   updatedAt: Date;
-// }
+  @BelongsTo(() => User)
+  user!: User;
+}
