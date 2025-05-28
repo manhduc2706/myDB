@@ -4,7 +4,7 @@ import { UploadService } from '../services/upload.service';
 export const uploadFile = async (req: Request, res: Response) => {
     try {
       const file = req.file;
-      const userId = String(req.user?.id);
+      const userId = String(req.user?.userId);
       if (!file) {
         res.status(400).json({ error: 'No file provided' });
         return;

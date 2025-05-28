@@ -1,8 +1,17 @@
-import { AllowNull, Column, DataType, Default, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import {
+  AllowNull,
+  Column,
+  DataType,
+  Default,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+} from "sequelize-typescript";
 import { Department } from "./department.model";
 
 export interface CompanyAttributes {
-  companyId: string;
+  companyId?: string;
   companyName: string;
 }
 
@@ -10,7 +19,7 @@ export interface CompanyAttributes {
   tableName: "companies",
   timestamps: true,
 })
-export class Company extends Model {
+export class Company extends Model<CompanyAttributes> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
@@ -18,11 +27,9 @@ export class Company extends Model {
 
   @AllowNull(false)
   @Column(DataType.STRING)
-  companyName!: string
-
+  companyName!: string;
 
   // 1 - N department
   @HasMany(() => Department)
-  departments?: Department[]
-
+  departments?: Department[];
 }

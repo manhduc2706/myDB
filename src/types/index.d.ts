@@ -1,7 +1,7 @@
 import 'multer';
 
 export interface JwtPayload {
-  id: string;
+  userId: string;
   email: string;
   role: "admin" | "user";
 }

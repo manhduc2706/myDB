@@ -11,8 +11,17 @@ import {
   Default,
 } from "sequelize-typescript";
 
+export interface UploadFileAttributes {
+  fileId?: string;
+  name: string;
+  path: string;
+  type: string;
+  size: number;
+  userId: string;
+}
+
 @Table({ tableName: "upload_files", timestamps: true })
-export class UploadFile extends Model {
+export class UploadFile extends Model<UploadFileAttributes> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)

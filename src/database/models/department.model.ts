@@ -14,7 +14,7 @@ import { Company } from "./company.model";
 import { User } from "./user.model";
 
 export interface DepartmentAttributes {
-  departmentId: string;
+  departmentId?: string;
   departmentName: string;
   companyId: string;
 }
@@ -23,7 +23,7 @@ export interface DepartmentAttributes {
   tableName: "departments",
   timestamps: true,
 })
-export class Department extends Model {
+export class Department extends Model<DepartmentAttributes> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)

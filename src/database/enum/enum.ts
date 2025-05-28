@@ -1,9 +1,9 @@
-export enum ROLE {
+export enum Role {
   ADMIN = "admin",
   USER = "user",
 }
 
-export enum STATE {
+export enum State {
   ACTIVE = "active",
   LOCKED = "locked",
 }

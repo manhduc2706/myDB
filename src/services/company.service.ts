@@ -1,17 +1,17 @@
-import { Company } from "../database/models/company.model";
+import { Company, CompanyAttributes } from "../database/models/company.model";
 
 export class CompanyService {
   // Tạo mới công ty
-  static async addOneCompany(companyName: string) {
+  static async addOneCompany(data: CompanyAttributes) {
     const existingCompany = await Company.findOne({
-      where: { companyName },
+      where: { companyName: data.companyName },
     });
 
     if (existingCompany) {
-      throw new Error('Company already exists');
+      throw new Error("Company already exists");
     }
 
-    const company = await Company.create({ companyName });
+    const company = await Company.create(data);
     return company;
   }
 
@@ -21,36 +21,36 @@ export class CompanyService {
   }
 
   // Lấy công ty theo ID
-  static async getCompanyId(id: string) {
-    const company = await Company.findByPk(parseInt(id));
+  static async getCompanyId(companyId: string) {
+    const company = await Company.findByPk(companyId);
 
     if (!company) {
-      throw new Error('Company not found');
+      throw new Error("Company not found");
     }
 
     return company;
   }
 
   // Cập nhật công ty
-  static async updateCompanyById(id: string, companyName: string) {
-    const company = await Company.findByPk(parseInt(id));
+  static async updateCompanyById(companyId: string, data: CompanyAttributes) {
+    const company = await Company.findByPk(companyId);
 
     if (!company) {
-      throw new Error('Company not found');
+      throw new Error("Company not found");
     }
 
-    company.companyName = companyName;
+    company.companyName = data.companyName;
     await company.save();
 
     return company;
   }
 
   // Xóa công ty
-  static async deleteCompanyById(id: string) {
-    const company = await Company.findByPk(parseInt(id));
+  static async deleteCompanyById(companyId: string) {
+    const company = await Company.findByPk(companyId);
 
     if (!company) {
-      throw new Error('Company not found');
+      throw new Error("Company not found");
     }
 
     await company.destroy();

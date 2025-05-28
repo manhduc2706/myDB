@@ -1,6 +1,9 @@
 // services/user.service.ts
 import { User } from "../database/models/user.model";
-import { RegisterInput } from '../database/schemas/user.schema';
+import {
+  RegisterInput,
+  UpdateUserInput,
+} from "../database/schemas/user.schema";
 
 export class UserService {
   // Đăng ký người dùng mới
@@ -10,7 +13,7 @@ export class UserService {
     });
 
     if (existing) {
-      throw new Error('Email đã được sử dụng');
+      throw new Error("Email đã được sử dụng");
     }
 
     const newUser = await User.create(data as any);
@@ -20,11 +23,15 @@ export class UserService {
   // Đăng nhập người dùng
   static async loginUser(email: string, password: string) {
     const user = await User.findOne({
-      where: { email, password }, 
+      where: { email, password },
     });
 
     if (!user) {
-      throw new Error('Invalid credentials');
+      throw new Error("Invalid credentials");
+    }
+
+    if (user.state === "locked") {
+      throw new Error("Tài khoản đã bị khóa");
     }
 
     return user;
@@ -36,19 +43,19 @@ export class UserService {
   }
 
   // Lấy người dùng theo ID
-  static async getUserById(id: string) {
-    const user = await User.findByPk(parseInt(id));
+  static async getUserById(userId: string) {
+    const user = await User.findByPk(userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
     return user;
   }
 
   // Cập nhật thông tin người dùng
-  static async updateUser(id: string, data: Partial<User>) {
-    const user = await User.findByPk(parseInt(id));
+  static async updateUser(userId: string, data: UpdateUserInput) {
+    const user = await User.findByPk(userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     await user.update(data);
@@ -56,10 +63,10 @@ export class UserService {
   }
 
   // Xóa người dùng
-  static async deleteUser(id: string) {
-    const user = await User.findByPk(parseInt(id));
+  static async deleteUser(userId: string) {
+    const user = await User.findByPk(userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     await user.destroy();

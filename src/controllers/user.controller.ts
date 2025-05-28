@@ -5,7 +5,8 @@ import { generateToken } from "../utils/jwt";
 //Đang ký người dùng mới
 export const register = async (req: Request, res: Response) => {
   try {
-    const user = await UserService.register(req.body);
+    const data = req.body;
+    const user = await UserService.register(data);
     res.status(201).json({ message: "Đăng ký thành công", user });
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
@@ -17,21 +18,21 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const user = await UserService.loginUser(email, password);
-    
+
     const token = generateToken({
-      id: user.userId,
+      userId: user.userId,
       email: user.email,
-      role: user.role
+      role: user.role,
     });
 
     res.status(200).json({
       message: "Đăng nhập thành công",
       user: {
-        id: user.userId,
+        userId: user.userId,
         email: user.email,
-        role: user.role
+        role: user.role,
       },
-      token
+      token,
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -55,8 +56,8 @@ export const getUsers = async (req: Request, res: Response) => {
 //Lấy người dùng theo ID
 export const getById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const user = await UserService.getUserById(id);
+    const userId = req.params.id;
+    const user = await UserService.getUserById(userId);
     res.status(200).json(user);
   } catch (error) {
     if (error instanceof Error) {
@@ -68,8 +69,9 @@ export const getById = async (req: Request, res: Response) => {
 //Cập nhật thông tin người dùng
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const user = await UserService.updateUser(id, req.body);
+    const userId = req.params.id;
+    const data = req.body;
+    const user = await UserService.updateUser(userId, data);
     res.status(200).json({ message: "Cập nhật thành công", user });
   } catch (error) {
     if (error instanceof Error) {
@@ -81,8 +83,8 @@ export const updateUser = async (req: Request, res: Response) => {
 //Xóa người dùng
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    await UserService.deleteUser(id);
+    const userId = req.params.id;
+    await UserService.deleteUser(userId);
     res.status(200).json({ message: "Xóa người dùng thành công" });
   } catch (error) {
     if (error instanceof Error) {

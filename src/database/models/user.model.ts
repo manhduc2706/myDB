@@ -1,24 +1,35 @@
-
 import { Department } from "./department.model";
-import { ROLE, STATE } from "../enum/enum";
-import { AllowNull, BelongsTo, Column, DataType, Default, ForeignKey, HasMany, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { Role, State } from "../enum/enum";
+import {
+  AllowNull,
+  BelongsTo,
+  Column,
+  DataType,
+  Default,
+  ForeignKey,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+  Unique,
+} from "sequelize-typescript";
 import { UploadFile } from "./upload.model";
 
-export interface UserAttributes{
-  userId: string;
+export interface UserAttributes {
+  userId?: string;
   username: string;
   password: string;
   email: string;
   departmentId: string;
-  role: ROLE;
-  state: STATE;
+  role: Role;
+  state: State;
 }
 
 @Table({
-  tableName: 'users',
+  tableName: "users",
   timestamps: true,
 })
-export class User extends Model {
+export class User extends Model<UserAttributes> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
@@ -38,8 +49,8 @@ export class User extends Model {
   email!: string;
 
   // 1 - N uploadFile
-  @HasMany(()=> UploadFile)
-  uploadFiles?: UploadFile[]
+  @HasMany(() => UploadFile)
+  uploadFiles?: UploadFile[];
 
   // N - 1 department
   @ForeignKey(() => Department)
@@ -51,14 +62,14 @@ export class User extends Model {
   department!: Department;
 
   @Column({
-    type: DataType.ENUM(...Object.values(ROLE)),
-    defaultValue: ROLE.USER,
+    type: DataType.ENUM(...Object.values(Role)),
+    defaultValue: Role.USER,
   })
-  role!: ROLE;
+  role!: Role;
 
   @Column({
-    type: DataType.ENUM(...Object.values(STATE)),
-    defaultValue: STATE.ACTIVE,
+    type: DataType.ENUM(...Object.values(State)),
+    defaultValue: State.ACTIVE,
   })
-  state!: STATE;
+  state!: State;
 }
