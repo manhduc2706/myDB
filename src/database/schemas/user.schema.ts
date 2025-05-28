@@ -7,7 +7,7 @@ export const registerSchema = z.object({
   email: z.string().email().endsWith("@gmail.com"),
   password: z.string().min(6),
   role: z.nativeEnum(ROLE).default(ROLE.USER),
-  departmentId: z.preprocess((val) => Number(val), z.number()),
+  departmentId: z.string().min(6),
 });
 
 // Schema cho cập nhật user
@@ -16,7 +16,7 @@ export const updateUserSchema = z.object({
   email: z.string().email().endsWith("@gmail.com").optional(),
   password: z.string().min(6).optional(),
   role: z.nativeEnum(ROLE).optional(),
-  departmentId: z.preprocess((val) => Number(val), z.number()).optional(),
+  departmentId: z.string().min(6),
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>;

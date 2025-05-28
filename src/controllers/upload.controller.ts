@@ -1,26 +1,29 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { UploadService } from '../services/upload.service';
 
-  export const uploadFile = async (req: Request, res: Response) => {
+export const uploadFile = async (req: Request, res: Response) => {
     try {
       const file = req.file;
-      const userId = String(req.user?.id || 0); // Gắn req.user từ middleware xác thực
-      if (!file) return res.status(400).json({ error: 'No file provided' });
+      const userId = String(req.user?.id);
+      if (!file) {
+        res.status(400).json({ error: 'No file provided' });
+        return;
+      }
 
       const saved = await UploadService.saveFileMetadata(file, userId);
-      return res.json({ file: saved });
+      res.json({ file: saved });
     } catch (err) {
       console.error(err);
-      return res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: 'Internal server error' });
     }
   }
 
-  export const listFiles = async (_req: Request, res: Response) => {
+export const listFiles = async (_req: Request, res: Response) => {
     try {
       const files = await UploadService.getAllFiles();
-      return res.json({ files });
+      res.json({ files });
     } catch (err) {
-      return res.status(500).json({ error: 'Cannot retrieve files' });
+      res.status(500).json({ error: 'Cannot retrieve files' });
     }
   }
 

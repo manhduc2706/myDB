@@ -1,18 +1,9 @@
-// import { User } from "../database/models/user.model";
+import 'multer';
 
 export interface JwtPayload {
-  id: number;
+  id: string;
   email: string;
   role: "admin" | "user";
-}
-
-declare namespace Express {
-  interface Request {
-    user?: {
-      id: string | number;
-      // thêm các thuộc tính khác của user nếu cần
-    };
-  }
 }
 
 declare global {

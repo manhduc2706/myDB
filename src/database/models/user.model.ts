@@ -22,7 +22,7 @@ export class User extends Model {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  userId!: number;
+  userId!: string;
 
   @AllowNull(false)
   @Column(DataType.STRING)

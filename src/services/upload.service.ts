@@ -5,9 +5,9 @@ export class UploadService {
     return await UploadFile.create({
       name: file.originalname,
       path: file.path,
-      mimetype: file.mimetype,
+      type: file.mimetype,
       size: file.size,
-      uploadedBy: userId,
+      userId,
     });
   }
 
